@@ -20,8 +20,8 @@ export default function DashboardPage() {
         <p className="text-sm text-stone-400 mt-0.5">Май 2025</p>
       </div>
 
-      {/* Метрики */}
-      <div className="grid grid-cols-4 gap-3 mb-5">
+      {/* 2 колонки на мобиле, 4 на десктопе */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         <MetricCard
           label="Баланс"
           value={formatCurrency(stats.balance)}
@@ -31,70 +31,63 @@ export default function DashboardPage() {
         <MetricCard
           label="Доход за май"
           value={formatCurrency(stats.monthlyIncome)}
-          sub={`${stats.paidApartments} из ${stats.totalApartments} оплатили`}
+          sub={`${stats.paidApartments} из ${stats.totalApartments}`}
         />
         <MetricCard
-          label="Расходы за май"
+          label="Расходы"
           value={formatCurrency(stats.monthlyExpenses)}
           sub="4 операции"
           valueColor="amber"
         />
         <MetricCard
-          label="Общий долг"
+          label="Долг"
           value={formatCurrency(stats.totalDebt)}
           sub="7 должников"
           valueColor="red"
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        {/* Последние платежи */}
+      {/* 1 колонка на мобиле, 2 на десктопе */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader title="Последние платежи" />
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-stone-50 border-b border-stone-100">
-                {['Кв.', 'Сумма', 'Дата', 'Способ'].map((h) => (
-                  <th
-                    key={h}
-                    className="px-4 py-2.5 text-left text-xs font-medium text-stone-400 uppercase tracking-wide"
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-stone-50">
-              {mockPayments.slice(0, 6).map((p) => (
-                <tr key={p.id} className="hover:bg-stone-50">
-                  <td className="px-4 py-2.5 font-medium text-stone-700">
-                    кв. {p.apartmentNumber}
-                  </td>
-                  <td className="px-4 py-2.5 font-mono text-stone-900">
-                    {formatCurrency(p.amount)}
-                  </td>
-                  <td className="px-4 py-2.5 text-stone-500">
-                    {formatShortDate(p.date)}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <Badge variant={p.method === 'bank' ? 'blue' : 'gray'}>
-                      {p.method === 'bank' ? 'Банк' : 'Нал.'}
-                    </Badge>
-                  </td>
+          {/* Скролл на мобиле */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-100">
+              <thead>
+                <tr className="bg-stone-50 border-b border-stone-100">
+                  {['Кв.', 'Сумма', 'Дата', 'Способ'].map((h) => (
+                    <th key={h} className="px-4 py-2.5 text-left text-xs font-medium text-stone-400 uppercase tracking-wide">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-stone-50">
+                {mockPayments.slice(0, 6).map((p) => (
+                  <tr key={p.id} className="hover:bg-stone-50">
+                    <td className="px-4 py-2.5 font-medium text-stone-700">кв. {p.apartmentNumber}</td>
+                    <td className="px-4 py-2.5 font-mono text-stone-900">{formatCurrency(p.amount)}</td>
+                    <td className="px-4 py-2.5 text-stone-500">{formatShortDate(p.date)}</td>
+                    <td className="px-4 py-2.5">
+                      <Badge variant={p.method === 'bank' ? 'blue' : 'gray'}>
+                        {p.method === 'bank' ? 'Банк' : 'Нал.'}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
 
-        {/* Бар-чарт по месяцам */}
         <Card>
           <CardHeader title="Сборы по месяцам" />
           <div className="p-5">
             <div className="flex items-end gap-2 h-32 mb-3">
               {monthlyData.map((d) => (
                 <div key={d.month} className="flex-1 flex flex-col items-center gap-1.5">
-                  <span className="text-xs text-stone-400 font-mono">
+                  <span className="text-xs text-stone-400 font-mono hidden sm:block">
                     {Math.round(d.amount / 1000)}к
                   </span>
                   <div className="w-full flex flex-col justify-end" style={{ height: '80px' }}>

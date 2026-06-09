@@ -85,10 +85,14 @@ export function MetricCard({ label, value, sub, valueColor = 'default' }: {
   label: string; value: string; sub?: string; valueColor?: ValueColor;
 }) {
   return (
-    <div className="bg-stone-50 border border-stone-200 rounded-xl p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-1.5">{label}</p>
-      <p className={`text-2xl font-semibold font-mono ${valueColors[valueColor]}`}>{value}</p>
-      {sub && <p className="text-xs text-stone-400 mt-1">{sub}</p>}
+    <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 md:p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-1.5 truncate">
+        {label}
+      </p>
+      <p className={`text-base md:text-2xl font-semibold font-mono leading-tight break-all ${valueColors[valueColor]}`}>
+        {value}
+      </p>
+      {sub && <p className="text-xs text-stone-400 mt-1 truncate">{sub}</p>}
     </div>
   );
 }
