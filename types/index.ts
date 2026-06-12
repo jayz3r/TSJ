@@ -1,6 +1,7 @@
 export interface Apartment {
   id: string;
   number: number;
+  accountNumber: string; // НОВОЕ — лицевой счёт, напр. "ЛС-00147"
   area: number;
   ownerName: string;
   phone?: string;
@@ -15,7 +16,7 @@ export interface Payment {
   apartmentNumber: number;
   ownerName: string;
   amount: number;
-  method: 'cash' | 'bank';
+  method: "cash" | "bank";
   date: string;
   note?: string;
   receiptNumber: string;
@@ -27,13 +28,13 @@ export interface Accrual {
   totalAmount: number;
   apartments: number;
   type: string;
-  status: 'applied' | 'pending';
+  status: "applied" | "pending";
   createdAt: string;
 }
 
 export interface Expense {
   id: string;
-  category: 'cleaning' | 'repair' | 'electrical' | 'security' | 'other';
+  category: "cleaning" | "repair" | "electrical" | "security" | "other";
   amount: number;
   description: string;
   contractor?: string;
@@ -55,7 +56,7 @@ export interface Request {
   apartmentNumber: number;
   subject: string;
   date: string;
-  status: 'new' | 'in_progress' | 'completed';
+  status: "new" | "in_progress" | "completed";
   assignee?: string;
 }
 
@@ -68,6 +69,11 @@ export interface DashboardStats {
   totalApartments: number;
 }
 
-export type PaymentMethod = 'cash' | 'bank';
-export type RequestStatus = 'new' | 'in_progress' | 'completed';
-export type ExpenseCategory = 'cleaning' | 'repair' | 'electrical' | 'security' | 'other';
+export type PaymentMethod = "cash" | "bank";
+export type RequestStatus = "new" | "in_progress" | "completed";
+export type ExpenseCategory =
+  | "cleaning"
+  | "repair"
+  | "electrical"
+  | "security"
+  | "other";
