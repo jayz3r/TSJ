@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { parseRole, ROLE_COOKIE_NAME } from "@/lib/role";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const role = parseRole(request.cookies.get(ROLE_COOKIE_NAME)?.value);
 
   if (role !== "admin") {
