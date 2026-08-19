@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { parseRole, ROLE_COOKIE_NAME, type UserRole } from '@/lib/role';
 
 const navItems = [
   { href: '/dashboard',  label: 'Обзор',      icon: '⊞', badge: null },
-  { href: '/apartments', label: 'Квартиры',   icon: '🏢', badge: null },
   { href: '/accruals',   label: 'Начисления', icon: '📄', badge: null },
   { href: '/payments',   label: 'Платежи',    icon: '💵', badge: null },
   { href: '/expenses',   label: 'Расходы',    icon: '🧾', badge: null },
@@ -18,11 +18,37 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [role, setRole] = useState<UserRole>('user');
+
+  useEffect(() => {
+    const cookie = document.cookie
+      .split('; ')
+      .find((item) => item.startsWith(`${ROLE_COOKIE_NAME}=`))
+      ?.split('=')[1];
+    setRole(parseRole(cookie));
+  }, []);
+
+  const setRoleCookie = (nextRole: UserRole) => {
+    document.cookie = `${ROLE_COOKIE_NAME}=${nextRole}; path=/; max-age=2592000; samesite=lax`;
+    setRole(nextRole);
+    const residentsPath = nextRole === 'admin' ? '/admin/residents' : '/residents';
+    router.push(residentsPath);
+    setOpen(false);
+  };
+
+  const residentItem = {
+    href: role === 'admin' ? '/admin/residents' : '/residents',
+    label: role === 'admin' ? 'Жильцы (админ)' : 'Жильцы',
+    icon: '🏢',
+    badge: null,
+  };
+  const visibleNavItems = [navItems[0], residentItem, ...navItems.slice(1)];
 
   const NavLinks = () => (
     <>
-      {navItems.map(({ href, label, icon, badge }) => {
+      {visibleNavItems.map(({ href, label, icon, badge }) => {
         const isActive = pathname === href || pathname.startsWith(href + '/');
         return (
           <Link
@@ -60,6 +86,21 @@ export function Sidebar() {
           <NavLinks />
         </nav>
         <div className="px-4 py-3 border-t border-stone-100">
+          <p className="text-xs text-stone-400 mb-2">Роль</p>
+          <div className="grid grid-cols-2 gap-2 mb-2">
+            <button
+              onClick={() => setRoleCookie('user')}
+              className={`text-xs rounded-md px-2 py-1 border ${role === 'user' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'border-stone-200 text-stone-500'}`}
+            >
+              Житель
+            </button>
+            <button
+              onClick={() => setRoleCookie('admin')}
+              className={`text-xs rounded-md px-2 py-1 border ${role === 'admin' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'border-stone-200 text-stone-500'}`}
+            >
+              Админ
+            </button>
+          </div>
           <p className="text-xs text-stone-400">Май 2025</p>
         </div>
       </aside>
@@ -101,6 +142,21 @@ export function Sidebar() {
               <NavLinks />
             </nav>
             <div className="px-4 py-3 border-t border-stone-100">
+              <p className="text-xs text-stone-400 mb-2">Роль</p>
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                <button
+                  onClick={() => setRoleCookie('user')}
+                  className={`text-xs rounded-md px-2 py-1 border ${role === 'user' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'border-stone-200 text-stone-500'}`}
+                >
+                  Житель
+                </button>
+                <button
+                  onClick={() => setRoleCookie('admin')}
+                  className={`text-xs rounded-md px-2 py-1 border ${role === 'admin' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'border-stone-200 text-stone-500'}`}
+                >
+                  Админ
+                </button>
+              </div>
               <p className="text-xs text-stone-400">Май 2025</p>
             </div>
           </div>
