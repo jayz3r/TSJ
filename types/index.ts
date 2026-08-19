@@ -34,6 +34,7 @@ export interface Accrual {
 
 export interface Expense {
   id: string;
+  apartmentId: string;
   category: "cleaning" | "repair" | "electrical" | "security" | "other";
   amount: number;
   description: string;
@@ -53,11 +54,13 @@ export interface Debtor {
 
 export interface Request {
   id: string;
+  apartmentId: string;
   apartmentNumber: number;
   subject: string;
   date: string;
   status: "new" | "in_progress" | "completed";
   assignee?: string;
+  createdByRole: "admin" | "user";
 }
 
 export interface DashboardStats {

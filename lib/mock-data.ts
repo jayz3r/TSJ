@@ -225,6 +225,7 @@ export const mockAccruals: Accrual[] = [
 export const mockExpenses: Expense[] = [
   {
     id: "1",
+    apartmentId: "1",
     category: "cleaning",
     amount: 8000,
     description: "Уборщица, май",
@@ -234,6 +235,7 @@ export const mockExpenses: Expense[] = [
   },
   {
     id: "2",
+    apartmentId: "2",
     category: "repair",
     amount: 7500,
     description: "Замена трубы в подвале",
@@ -243,6 +245,7 @@ export const mockExpenses: Expense[] = [
   },
   {
     id: "3",
+    apartmentId: "3",
     category: "other",
     amount: 3250,
     description: "Канцтовары для правления",
@@ -251,6 +254,7 @@ export const mockExpenses: Expense[] = [
   },
   {
     id: "4",
+    apartmentId: "7",
     category: "electrical",
     amount: 3000,
     description: "Замена лампочек подъезд №1",
@@ -298,41 +302,51 @@ export const mockDebtors: Debtor[] = [
 export const mockRequests: Request[] = [
   {
     id: "038",
-    apartmentNumber: 14,
+    apartmentId: "4",
+    apartmentNumber: 5,
     subject: "Течёт труба в подъезде",
     date: "2025-05-27",
     status: "new",
+    createdByRole: "user",
   },
   {
     id: "037",
+    apartmentId: "3",
     apartmentNumber: 3,
     subject: "Не работает домофон",
     date: "2025-05-25",
     status: "in_progress",
     assignee: "Фёдоров А.",
+    createdByRole: "user",
   },
   {
     id: "036",
-    apartmentNumber: 28,
+    apartmentId: "8",
+    apartmentNumber: 15,
     subject: "Сломан замок на чердак",
     date: "2025-05-24",
     status: "new",
+    createdByRole: "user",
   },
   {
     id: "035",
+    apartmentId: "6",
     apartmentNumber: 9,
     subject: "Замена перегоревшей лампы",
     date: "2025-05-20",
     status: "completed",
     assignee: "Тех. служба",
+    createdByRole: "admin",
   },
   {
     id: "034",
-    apartmentNumber: 41,
+    apartmentId: "10",
+    apartmentNumber: 22,
     subject: "Шум от соседей",
     date: "2025-05-18",
     status: "completed",
     assignee: "УК",
+    createdByRole: "admin",
   },
 ];
 
